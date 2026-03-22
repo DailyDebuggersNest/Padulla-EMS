@@ -1,5 +1,24 @@
 <?php
 // config/db.php
+
+// Define BASE_PATH dynamically to allow renaming the EMS folder
+if (!defined('BASE_PATH')) {
+    $r = str_replace('\\', '/', dirname(__DIR__));
+    $d = str_replace('\\', '/', $_SERVER['DOCUMENT_ROOT'] ?? '');
+    $basePath = '/';
+    if (!empty($d) && strpos($r, $d) === 0) {
+        $basePath = substr($r, strlen($d));
+    }
+    // Fallback if Document Root is not perfectly matched (e.g. some alias setups)
+    if (empty($d) || strpos($r, $d) !== 0) {
+        // Fallback: extract the directory name of the project root
+        $basePath = '/' . basename($r);
+    }
+    
+    $basePath = rtrim($basePath, '/') . '/';
+    define('BASE_PATH', $basePath);
+}
+
 $host = '127.0.0.1';
 $db   = 'ems_db25';
 $user = 'root';

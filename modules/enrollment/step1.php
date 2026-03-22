@@ -214,7 +214,7 @@ $curriculum_subjects = $currStmt->fetchAll();
                 <p class="mb-0 text-dark">This student is already officially enrolled for the <strong><?= htmlspecialchars($semester_id) ?> Semester, S.Y. <?= htmlspecialchars($acad_year) ?></strong>.</p>
             </div>
             <div>
-                <a href="/EMS/modules/students/view.php?student_id=<?= urlencode($student_id) ?>" class="btn btn-outline-warning"><i class="fas fa-eye"></i> View Profile</a>
+                <a href="<?= BASE_PATH ?>modules/students/view.php?student_id=<?= urlencode($student_id) ?>" class="btn btn-outline-warning"><i class="fas fa-eye"></i> View Profile</a>
                 <a href="step1.php?student_id=<?= urlencode($student_id) ?>&acad_year=<?= urlencode($acad_year) ?>&semester_id=<?= urlencode($semester_id) ?>&program_id=<?= urlencode($selected_program) ?>&year_level_id=<?= urlencode($selected_year_level) ?>&section=<?= urlencode($selected_section ?? 'X') ?>&force_edit=1" class="btn btn-warning ms-2"><i class="fas fa-edit"></i> Force Modify Course/Subjects</a>
             </div>
         </div>

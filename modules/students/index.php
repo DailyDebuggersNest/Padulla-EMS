@@ -240,7 +240,7 @@ $students = $stmt->fetchAll();
                                                 <i class="fas fa-check-circle"></i> Enrolled
                                             </button>
                                         <?php else: ?>
-                                            <a href="/EMS/modules/enrollment/step1.php?student_id=<?= urlencode($student['student_id']) ?>" class="btn btn-sm btn-primary">
+                                            <a href="<?= BASE_PATH ?>modules/enrollment/step1.php?student_id=<?= urlencode($student['student_id']) ?>" class="btn btn-sm btn-primary">
                                                 <i class="fas fa-check-circle"></i> Enroll
                                             </a>
                                         <?php endif; ?>

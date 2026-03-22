@@ -41,7 +41,7 @@ include_once '../../includes/header.php';
                 <h4>Browse Masterlist</h4>
                 <p>View all students and filter by program or year level to enroll.</p>
                 <div class="mt-4">
-                    <a href="/EMS/modules/students/index.php" class="btn btn-secondary">Go to Student List <i class="fas fa-arrow-right"></i></a>
+                    <a href="<?= BASE_PATH ?>modules/students/index.php" class="btn btn-secondary">Go to Student List <i class="fas fa-arrow-right"></i></a>
                 </div>
             </div>
         </div>

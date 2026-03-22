@@ -73,7 +73,7 @@ $checkEntry = $pdo->prepare("SELECT enrollment_id FROM enrollments WHERE student
 $checkEntry->execute([$student_id, $acad_year, $semester_id]);
 if ($checkEntry->rowCount() > 0) {
     echo "<div class='alert alert-danger'><h3><i class='fas fa-exclamation-circle'></i> Already Enrolled</h3><p>This student is already enrolled or pending for $acad_year - $semester_id.</p></div>";
-    echo "<a href='/EMS/modules/enrollment/records.php' class='btn btn-primary'>View Records</a>";
+    echo "<a href="<?= BASE_PATH ?>modules/enrollment/records.php' class='btn btn-primary'>View Records</a>";
     include_once '../../includes/footer.php';
     exit;
 }

@@ -87,12 +87,12 @@ try {
                         <a href="print_cor.php?id=<?= $enrollment_id ?>" class="btn btn-warning btn-lg me-2" target="_blank">
                             <i class="fas fa-print"></i> Print COR
                         </a>
-                        <a href="/EMS/modules/payments/index.php?student_id=<?= urlencode($student_id) ?>" class="btn btn-primary btn-lg">
+                        <a href="<?= BASE_PATH ?>modules/payments/index.php?student_id=<?= urlencode($student_id) ?>" class="btn btn-primary btn-lg">
                             <i class="fas fa-money-bill-wave"></i> Proceed to Payment
                         </a>
                     </div>
                     <div class="mt-3">
-                        <a href="/EMS/index.php" class="text-muted">Return to Dashboard</a>
+                        <a href="<?= BASE_PATH ?>index.php" class="text-muted">Return to Dashboard</a>
                     </div>
                 </div>
             </div>

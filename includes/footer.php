@@ -9,7 +9,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <!-- Custom JS -->
-    <script src="/EMS/assets/js/script.js"></script>
+    <script src="<?= BASE_PATH ?>assets/js/script.js"></script>
     <script>
         // Toggle Sidebar
         $("#menu-toggle").click(function(e) {

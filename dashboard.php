@@ -53,9 +53,9 @@ $totalPayments = $pdo->query("SELECT SUM(amount) FROM payments")->fetchColumn();
                 <h5 class="mb-0">Quick Actions</h5>
             </div>
             <div class="card-body">
-                <a href="/EMS/modules/enrollment/index.php" class="btn btn-primary me-2"><i class="fas fa-user-plus"></i> New Enrollment</a>
-                <a href="/EMS/modules/students/index.php" class="btn btn-secondary me-2"><i class="fas fa-users"></i> Student Masterlist</a>
-                <a href="/EMS/modules/enrollment/records.php" class="btn btn-info me-2 text-white"><i class="fas fa-file-alt"></i> View Records</a>
+                <a href="<?= BASE_PATH ?>modules/enrollment/index.php" class="btn btn-primary me-2"><i class="fas fa-user-plus"></i> New Enrollment</a>
+                <a href="<?= BASE_PATH ?>modules/students/index.php" class="btn btn-secondary me-2"><i class="fas fa-users"></i> Student Masterlist</a>
+                <a href="<?= BASE_PATH ?>modules/enrollment/records.php" class="btn btn-info me-2 text-white"><i class="fas fa-file-alt"></i> View Records</a>
             </div>
         </div>
     </div>
