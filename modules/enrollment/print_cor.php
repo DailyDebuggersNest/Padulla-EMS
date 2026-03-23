@@ -57,7 +57,7 @@ $schedules = $schedStmt->fetchAll();
 
     <div class="cor-container">
         <div class="school-header">
-            <h2>UNIVERSITY OF EXCELLENCE</h2>
+            <h2>UA ACADEMY</h2>
             <p class="mb-0">Office of the University Registrar</p>
             <h4 class="mt-2 text-uppercase">Certificate of Registration</h4>
         </div>
@@ -72,7 +72,7 @@ $schedules = $schedStmt->fetchAll();
             </div>
             <div class="col-sm-4 text-end">
                 <table class="info-table ms-auto">
-                    <tr><th>Term:</th><td><?= htmlspecialchars($enrollment['semester_id'] . ' Sem, ' . $enrollment['academic_year']) ?></td></tr>
+                    <tr><th>Term:</th><td><?= htmlspecialchars(($enrollment['semester_id'] == 3 ? 'Summer' : $enrollment['semester_id'] . ' Sem') . ', ' . $enrollment['academic_year']) ?></td></tr>
                     <tr><th>Year Level:</th><td><?= htmlspecialchars($enrollment['year_level_id']) ?></td></tr>
                     <tr><th>Status:</th><td><?= htmlspecialchars($enrollment['status']) ?></td></tr>
                 </table>
@@ -113,7 +113,7 @@ $schedules = $schedStmt->fetchAll();
             <div class="col-6">
                 <table class="table table-sm table-borderless w-75">
                     <tr><td class="fw-bold">Assessment:</td><td></td></tr>
-                    <tr><td>Total Amount Assessed:</td><td class="fw-bold">₱<?= number_format($enrollment['assessed_amount'], 2) ?></td></tr>
+                    <tr><td>Total Amount Assessed:</td><td class="fw-bold">&#8369;<?= number_format($enrollment['assessed_amount'], 2) ?></td></tr>
                 </table>
             </div>
             <div class="col-6 text-center mt-5">

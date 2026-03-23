@@ -6,14 +6,14 @@ include_once __DIR__ . '/includes/header.php';
 // Fetch quick stats
 $totalStudents = $pdo->query("SELECT COUNT(*) FROM students")->fetchColumn();
 
-// Find the active/latest term for accurate enrolled count
+// Find the active/latest term
 $latestTermStmt = $pdo->query("SELECT academic_year, semester_id FROM enrollments ORDER BY academic_year DESC, semester_id DESC LIMIT 1");
 $latestTerm = $latestTermStmt->fetch();
 $active_academic_year = $latestTerm ? $latestTerm['academic_year'] : '2025-2026';
 $active_semester = $latestTerm ? $latestTerm['semester_id'] : 1;
 
-$totalEnrolledStmt = $pdo->prepare("SELECT COUNT(*) FROM enrollments WHERE academic_year = ? AND semester_id = ? AND status != 'Cancelled'");
-$totalEnrolledStmt->execute([$active_academic_year, $active_semester]);
+// Count all unique students that are currently enrolled in any active term without being cancelled
+$totalEnrolledStmt = $pdo->query("SELECT COUNT(DISTINCT student_id) FROM enrollments WHERE status != 'Cancelled'");
 $totalEnrolled = $totalEnrolledStmt->fetchColumn();
 
 $totalPayments = $pdo->query("SELECT SUM(amount) FROM payments")->fetchColumn();
@@ -31,7 +31,7 @@ $totalPayments = $pdo->query("SELECT SUM(amount) FROM payments")->fetchColumn();
     <div class="col-md-4">
         <div class="card text-white bg-success mb-3 shadow-sm rounded">
             <div class="card-body">
-                <h5 class="card-title" title="Term: <?= htmlspecialchars($active_academic_year . ' - ' . $active_semester) ?>"><i class="fas fa-user-check"></i> Enrolled this Term</h5>
+                <h5 class="card-title" title="Total Enrolled Students Across All Terms"><i class="fas fa-user-check"></i> Total Enrolled</h5>
                 <p class="card-text display-4"><?= $totalEnrolled ?: 0 ?></p>
             </div>
         </div>
@@ -40,7 +40,7 @@ $totalPayments = $pdo->query("SELECT SUM(amount) FROM payments")->fetchColumn();
         <div class="card text-white bg-info mb-3 shadow-sm rounded">
             <div class="card-body">
                 <h5 class="card-title"><i class="fas fa-money-bill-wave"></i> Total Payments</h5>
-                <p class="card-text display-4">₱<?= number_format($totalPayments ?: 0, 2) ?></p>
+                <p class="card-text display-4">&#8369;<?= number_format($totalPayments ?: 0, 2) ?></p>
             </div>
         </div>
     </div>
@@ -53,9 +53,9 @@ $totalPayments = $pdo->query("SELECT SUM(amount) FROM payments")->fetchColumn();
                 <h5 class="mb-0">Quick Actions</h5>
             </div>
             <div class="card-body">
-                <a href="/EMS/modules/enrollment/index.php" class="btn btn-primary me-2"><i class="fas fa-user-plus"></i> New Enrollment</a>
-                <a href="/EMS/modules/students/index.php" class="btn btn-secondary me-2"><i class="fas fa-users"></i> Student Masterlist</a>
-                <a href="/EMS/modules/enrollment/records.php" class="btn btn-info me-2 text-white"><i class="fas fa-file-alt"></i> View Records</a>
+                <a href="<?= BASE_PATH ?>modules/enrollment/index.php" class="btn btn-primary me-2"><i class="fas fa-user-plus"></i> New Enrollment</a>
+                <a href="<?= BASE_PATH ?>modules/students/index.php" class="btn btn-secondary me-2"><i class="fas fa-users"></i> Student Masterlist</a>
+                <a href="<?= BASE_PATH ?>modules/enrollment/records.php" class="btn btn-info me-2 text-white"><i class="fas fa-file-alt"></i> View Records</a>
             </div>
         </div>
     </div>

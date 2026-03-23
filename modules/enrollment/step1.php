@@ -78,16 +78,28 @@ if (!$selected_program) {
     $fallbackProg = $pdo->query("SELECT program_id FROM programs LIMIT 1")->fetchColumn();
     $selected_program = $fallbackProg;
 }
-$currStmt = $pdo->prepare("
-    SELECT c.*, cr.curriculum_id
-    FROM curriculum cr
-    JOIN courses c ON cr.course_id = c.course_id
-    WHERE cr.program_id = ? 
-      AND cr.year_level_id = ? 
-      AND cr.semester_id = ?
-");
+if ($semester_id == 3) {
+    // For Summer, fetch ALL courses in the program so students can retake/add failed subjects
+    $currStmt = $pdo->prepare("
+        SELECT c.*, MIN(cr.curriculum_id) as curriculum_id
+        FROM curriculum cr
+        JOIN courses c ON cr.course_id = c.course_id
+        WHERE cr.program_id = ?
+        GROUP BY c.course_id
+    ");
+    $currStmt->execute([$selected_program]);
+} else {
+    $currStmt = $pdo->prepare("
+        SELECT c.*, cr.curriculum_id
+        FROM curriculum cr
+        JOIN courses c ON cr.course_id = c.course_id
+        WHERE cr.program_id = ?
+          AND cr.year_level_id = ?
+          AND cr.semester_id = ?
+    ");
+    $currStmt->execute([$selected_program, $selected_year_level, $semester_id]);
+}
 
-$currStmt->execute([$selected_program, $selected_year_level, $semester_id]);
 $curriculum_subjects = $currStmt->fetchAll();
 
 // We also need available schedules for these subjects so the user can select a section
@@ -199,7 +211,7 @@ $curriculum_subjects = $currStmt->fetchAll();
                     </div>
                 </form>
                 <div class="alert alert-info mt-3 mb-0">
-                    <i class="fas fa-info-circle"></i> Showing subjects for <strong>Year <?= htmlspecialchars($selected_year_level) ?> - <?= htmlspecialchars($semester_id) ?> Semester</strong> based on curriculum.
+                    <i class="fas fa-info-circle"></i> Showing subjects for <strong>Year <?= htmlspecialchars($selected_year_level) ?> - <?= $semester_id == 3 ? 'Summer' : htmlspecialchars($semester_id) . ' Semester' ?></strong> based on curriculum.
                 </div>
             </div>
         </div>
@@ -211,10 +223,10 @@ $curriculum_subjects = $currStmt->fetchAll();
         <div class="d-flex justify-content-between align-items-center">
             <div>
                 <h4 class="alert-heading text-warning mb-1"><i class="fas fa-exclamation-triangle"></i> Already Enrolled</h4>
-                <p class="mb-0 text-dark">This student is already officially enrolled for the <strong><?= htmlspecialchars($semester_id) ?> Semester, S.Y. <?= htmlspecialchars($acad_year) ?></strong>.</p>
+                <p class="mb-0 text-dark">This student is already officially enrolled for the <strong><?= $semester_id == 3 ? 'Summer' : htmlspecialchars($semester_id) . ' Semester' ?>, S.Y. <?= htmlspecialchars($acad_year) ?></strong>.</p>
             </div>
             <div>
-                <a href="/EMS/modules/students/view.php?student_id=<?= urlencode($student_id) ?>" class="btn btn-outline-warning"><i class="fas fa-eye"></i> View Profile</a>
+                <a href="<?= BASE_PATH ?>modules/students/view.php?student_id=<?= urlencode($student_id) ?>" class="btn btn-outline-warning"><i class="fas fa-eye"></i> View Profile</a>
                 <a href="step1.php?student_id=<?= urlencode($student_id) ?>&acad_year=<?= urlencode($acad_year) ?>&semester_id=<?= urlencode($semester_id) ?>&program_id=<?= urlencode($selected_program) ?>&year_level_id=<?= urlencode($selected_year_level) ?>&section=<?= urlencode($selected_section ?? 'X') ?>&force_edit=1" class="btn btn-warning ms-2"><i class="fas fa-edit"></i> Force Modify Course/Subjects</a>
             </div>
         </div>
@@ -223,6 +235,9 @@ $curriculum_subjects = $currStmt->fetchAll();
 
 <!-- Subjects Selection Form -->
 <form action="step2_process.php" method="POST" id="enrollmentForm" <?= ($already_enrolled && !$force_edit) ? 'style="display:none;"' : '' ?>>
+    <?php if ($force_edit): ?>
+        <input type="hidden" name="force_edit" value="1">
+    <?php endif; ?>
     <input type="hidden" name="student_id" value="<?= htmlspecialchars($student_id) ?>">
     <input type="hidden" name="acad_year" value="<?= htmlspecialchars($acad_year) ?>">
     <input type="hidden" name="semester_id" value="<?= htmlspecialchars($semester_id) ?>">
@@ -264,6 +279,15 @@ $curriculum_subjects = $currStmt->fetchAll();
                                     ");
                                     $schedStmt->execute([$subject['course_id'], $acad_year, $semester_id, $target_section]);
                                     $schedules = $schedStmt->fetchAll();
+                                    
+                                    // Make sure a subject appears in summer even if there's no official schedule assigned yet
+                                    if(count($schedules) == 0 && $semester_id == 3) {
+                                        $insertSched = $pdo->prepare("INSERT INTO schedules (course_id, academic_year, semester_id, days, time_start, time_end, room, capacity, section_code) VALUES (?, ?, ?, 'TBA', '08:00:00', '11:00:00', 'TBA', 40, ?)");
+                                        $insertSched->execute([$subject['course_id'], $acad_year, $semester_id, $target_section]);
+                                        
+                                        $schedStmt->execute([$subject['course_id'], $acad_year, $semester_id, $target_section]);
+                                        $schedules = $schedStmt->fetchAll();
+                                    }
 
                                     // If no schedule exists for this specific section, skip showing the subject
                                     if(count($schedules) == 0) {
@@ -364,3 +388,5 @@ $curriculum_subjects = $currStmt->fetchAll();
 </script>
 
 <?php include_once '../../includes/footer.php'; ?>
+
+

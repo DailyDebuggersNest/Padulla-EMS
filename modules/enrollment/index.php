@@ -64,7 +64,7 @@ function previewTerm(code) {
         let semester_id = '';
         if(termSuffix === '1') semester_id = '1st Sem';
         else if(termSuffix === '2') semester_id = '2nd Sem';
-        else if(termSuffix === '0') semester_id = 3;
+        else if(termSuffix === '0') semester_id = 'Summer';
         else {
             preview.innerHTML = '<span class="text-danger">Invalid Term Suffix</span>';
             return;

@@ -72,7 +72,7 @@ function getOrdinal($number) {
     </div>
     <div class="col-md-6 text-end">
         <a href="index.php" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Back to List</a>
-        <a href="/EMS/modules/enrollment/step1.php?student_id=<?= urlencode($student_id) ?>" class="btn btn-primary"><i class="fas fa-check-circle"></i> New Enrollment</a>
+        <a href="<?= BASE_PATH ?>modules/enrollment/step1.php?student_id=<?= urlencode($student_id) ?>" class="btn btn-primary"><i class="fas fa-check-circle"></i> New Enrollment</a>
     </div>
 </div>
 
@@ -172,7 +172,7 @@ function getOrdinal($number) {
                                         <div class="fs-6 fw-bold me-3"><?= $enrollment['semester_id'] == 1 ? '1st' : ($enrollment['semester_id'] == 2 ? '2nd' : 'Summer') ?> Semester</div>
                                         <div class="text-muted small">S.Y. <?= htmlspecialchars($enrollment['academic_year']) ?></div>
                                         <div class="ms-auto text-end">
-                                             <a href="/EMS/modules/enrollment/print_cor.php?enrollment_id=<?= $enr_id ?>" target="_blank" class="btn btn-sm btn-outline-secondary border-0"><i class="fas fa-print"></i></a>
+                                             <a href="<?= BASE_PATH ?>modules/enrollment/print_cor.php?enrollment_id=<?= $enr_id ?>" target="_blank" class="btn btn-sm btn-outline-secondary border-0"><i class="fas fa-print"></i></a>
                                         </div>
                                     </div>
 
@@ -240,8 +240,8 @@ function getOrdinal($number) {
                     <div class="text-center py-5">
                         <i class="fas fa-folder-open fa-3x text-muted mb-3"></i>
                         <h5>No Enrollment History</h5>
-                        <p class="text-muted">This student has not enrolled in any semester_id yet.</p>
-                        <a href="/EMS/modules/enrollment/step1.php?student_id=<?= urlencode($student_id) ?>" class="btn btn-primary mt-2">Enroll Now</a>
+                        <p class="text-muted">This student has not enrolled in any semester yet.</p>
+                        <a href="<?= BASE_PATH ?>modules/enrollment/step1.php?student_id=<?= urlencode($student_id) ?>" class="btn btn-primary mt-2">Enroll Now</a>
                     </div>
                 <?php endif; ?>
             </div>

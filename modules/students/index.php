@@ -112,7 +112,7 @@ $programs = $pdo->query("SELECT * FROM programs ORDER BY program_code")->fetchAl
 
 // Build query
 $sql = "SELECT s.*, p.program_code, p.program_name,
-        (SELECT COUNT(*) FROM enrollments e WHERE e.student_id = s.student_id AND e.academic_year = '$active_academic_year' AND e.semester_id = '$active_semester' AND e.status != 'Cancelled') as is_currently_enrolled,
+        (SELECT COUNT(*) FROM enrollments e WHERE e.student_id = s.student_id AND e.status != 'Cancelled') as is_currently_enrolled,
         (SELECT section FROM enrollments e WHERE e.student_id = s.student_id AND e.status != 'Cancelled' ORDER BY enrollment_date DESC LIMIT 1) as latest_section,
         (SELECT semester_id FROM enrollments e WHERE e.student_id = s.student_id AND e.status != 'Cancelled' ORDER BY enrollment_date DESC LIMIT 1) as latest_semester,
         (SELECT enrollment_id FROM enrollments e WHERE e.student_id = s.student_id AND e.status != 'Cancelled' ORDER BY enrollment_date DESC LIMIT 1) as latest_enrollment_id
@@ -206,7 +206,7 @@ $students = $stmt->fetchAll();
                                 <td><?= htmlspecialchars(empty(trim($student['program_code'] ?? '')) ? 'N/A' : $student['program_code']) ?></td>
                                 <td><?= htmlspecialchars(empty(trim($student['year_level_id'] ?? '')) ? 'N/A' : $student['year_level_id']) ?></td>
                                 <td><?= htmlspecialchars(empty(trim($student['latest_section'] ?? '')) ? 'N/A' : $student['latest_section']) ?></td>
-                                <td><?= htmlspecialchars(empty(trim($student['latest_semester'] ?? '')) ? 'N/A' : $student['latest_semester'] . ' Sem') ?></td>
+                                <td><?= htmlspecialchars(empty(trim($student['latest_semester'] ?? '')) ? 'N/A' : ($student['latest_semester'] == 3 ? 'Summer' : $student['latest_semester'] . ' Sem')) ?></td>
                                 <td>
                                     <?php 
                                         $badgeClass = 'bg-success';
@@ -236,11 +236,11 @@ $students = $stmt->fetchAll();
                                         <?php endif; ?>
 
                                         <?php if ($student['is_currently_enrolled'] > 0): ?>
-                                            <button class="btn btn-sm btn-secondary" disabled>
+                                            <a href="#" onclick="if(confirm('This student is already enrolled. Do you want to forcefully edit their subjects or re-enroll them?')) { window.location.href='<?= BASE_PATH ?>modules/enrollment/step1.php?student_id=<?= urlencode($student['student_id']) ?>&force_edit=1'; } return false;" class="btn btn-sm btn-secondary">
                                                 <i class="fas fa-check-circle"></i> Enrolled
-                                            </button>
+                                            </a>
                                         <?php else: ?>
-                                            <a href="/EMS/modules/enrollment/step1.php?student_id=<?= urlencode($student['student_id']) ?>" class="btn btn-sm btn-primary">
+                                            <a href="<?= BASE_PATH ?>modules/enrollment/step1.php?student_id=<?= urlencode($student['student_id']) ?>" class="btn btn-sm btn-primary">
                                                 <i class="fas fa-check-circle"></i> Enroll
                                             </a>
                                         <?php endif; ?>

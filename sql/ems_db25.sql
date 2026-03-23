@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 22, 2026 at 02:13 PM
+-- Generation Time: Mar 23, 2026 at 03:53 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -19,12 +19,8 @@ SET time_zone = "+00:00";
 
 --
 -- Database: `ems_db25`
-
 CREATE DATABASE IF NOT EXISTS `ems_db25`;
 USE `ems_db25`;
-SET FOREIGN_KEY_CHECKS=0;
-
---
 
 -- --------------------------------------------------------
 
@@ -108,38 +104,6 @@ INSERT INTO `courses` (`course_id`, `course_code`, `course_name`, `units_lec`, `
 -- --------------------------------------------------------
 
 --
---
--- Table structure for table `year_levels`
---
-
-CREATE TABLE `year_levels` (
-  `year_level_id` int(11) NOT NULL AUTO_INCREMENT,
-  `year_level_name` varchar(50) NOT NULL,
-  PRIMARY KEY (`year_level_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
-INSERT INTO `year_levels` (`year_level_id`, `year_level_name`) VALUES
-(1, '1st Year'),
-(2, '2nd Year'),
-(3, '3rd Year'),
-(4, '4th Year');
-
---
--- Table structure for table `semesters`
---
-
-CREATE TABLE `semesters` (
-  `semester_id` int(11) NOT NULL AUTO_INCREMENT,
-  `semester_name` varchar(50) NOT NULL,
-  PRIMARY KEY (`semester_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
-INSERT INTO `semesters` (`semester_id`, `semester_name`) VALUES
-(1, '1st Semester'),
-(2, '2nd Semester'),
-(3, 'Summer');
-
--- --------------------------------------------------------
 -- Table structure for table `curriculum`
 --
 
@@ -277,7 +241,11 @@ INSERT INTO `curriculum` (`curriculum_id`, `program_id`, `course_id`, `year_leve
 (119, 5, 3, 3, 2),
 (120, 5, 70, 4, 2),
 (121, 5, 71, 4, 2),
-(122, 5, 5, 4, 2);
+(122, 5, 5, 4, 2),
+(125, 1, 1, 1, 3),
+(126, 1, 2, 1, 3),
+(127, 2, 21, 1, 3),
+(128, 2, 22, 1, 3);
 
 -- --------------------------------------------------------
 
@@ -403,8 +371,7 @@ INSERT INTO `enrollments` (`enrollment_id`, `student_id`, `academic_year`, `seme
 (153, 'UAA-2025-0003', '2025-2026', 2, '2026-01-15 10:00:00', 'Enrolled', 11.00, 11250.00, 'X', NULL),
 (154, 'UAA-2025-0004', '2025-2026', 2, '2026-01-15 10:00:00', 'Enrolled', 16.00, 15000.00, 'X', NULL),
 (155, 'UAA-2025-0005', '2025-2026', 2, '2026-01-15 10:00:00', 'Enrolled', 14.00, 13500.00, 'X', NULL),
-(164, 'UAA-2026-0001', '2025-2026', 1, '2026-03-22 20:40:51', 'Enrolled', 11.00, 7000.00, 'X', 3),
-(165, 'UAA-2026-0001', '2025-2026', 2, '2026-03-22 20:41:10', 'Enrolled', 11.00, 7000.00, 'X', 3);
+(170, 'UAA-2022-0001', '2025-2026', 3, '2026-03-23 22:06:01', 'Enrolled', 35.00, 23000.00, 'X', 1);
 
 -- --------------------------------------------------------
 
@@ -761,14 +728,18 @@ INSERT INTO `enrollment_schedules` (`id`, `enrollment_id`, `schedule_id`) VALUES
 (336, 155, 422),
 (337, 155, 78),
 (338, 155, 94),
-(369, 164, 42),
-(370, 164, 250),
-(371, 164, 82),
-(372, 164, 98),
-(373, 165, 43),
-(374, 165, 251),
-(375, 165, 83),
-(376, 165, 99);
+(387, 170, 950),
+(388, 170, 951),
+(389, 170, 952),
+(390, 170, 953),
+(391, 170, 954),
+(392, 170, 955),
+(393, 170, 963),
+(394, 170, 964),
+(395, 170, 965),
+(396, 170, 966),
+(397, 170, 967),
+(398, 170, 968);
 
 -- --------------------------------------------------------
 
@@ -892,7 +863,8 @@ INSERT INTO `payments` (`payment_id`, `student_id`, `enrollment_id`, `or_number`
 (103, 'UAA-2025-0002', 152, 'OR-737708', 11250.00, '2026-01-25 10:00:00', 'Full Payment'),
 (104, 'UAA-2025-0003', 153, 'OR-875051', 11250.00, '2026-01-25 10:00:00', 'Full Payment'),
 (105, 'UAA-2025-0004', 154, 'OR-609128', 15000.00, '2026-01-25 10:00:00', 'Full Payment'),
-(106, 'UAA-2025-0005', 155, 'OR-258761', 13500.00, '2026-01-25 10:00:00', 'Full Payment');
+(106, 'UAA-2025-0005', 155, 'OR-258761', 13500.00, '2026-01-25 10:00:00', 'Full Payment'),
+(113, 'UAA-2022-0001', 170, 'OR-45465692', 23000.00, '2026-03-23 22:51:38', 'cash');
 
 -- --------------------------------------------------------
 
@@ -948,8 +920,8 @@ INSERT INTO `schedules` (`schedule_id`, `course_id`, `academic_year`, `semester_
 (39, 1, '2023-2024', 2, 7, 'Tue', '11:00:00', '15:00:00', 'RM-365', 40, 0, 'X'),
 (40, 1, '2024-2025', 1, 6, 'Wed', '09:00:00', '15:00:00', 'RM-257', 40, 0, 'X'),
 (41, 1, '2024-2025', 2, 7, 'Fri', '10:00:00', '15:00:00', 'RM-162', 40, 0, 'X'),
-(42, 1, '2025-2026', 1, 5, 'Thu', '13:00:00', '17:00:00', 'RM-322', 40, 1, 'X'),
-(43, 1, '2025-2026', 2, 7, 'Tue', '08:00:00', '16:00:00', 'RM-255', 40, 1, 'X'),
+(42, 1, '2025-2026', 1, 5, 'Thu', '13:00:00', '17:00:00', 'RM-322', 40, 0, 'X'),
+(43, 1, '2025-2026', 2, 7, 'Tue', '08:00:00', '16:00:00', 'RM-255', 40, 0, 'X'),
 (44, 1, '2026-2027', 1, 6, 'Thu', '09:00:00', '16:00:00', 'RM-114', 40, 0, 'X'),
 (45, 1, '2026-2027', 2, 1, 'Tue', '08:00:00', '17:00:00', 'RM-493', 40, 0, 'X'),
 (46, 2, '2023-2024', 1, 3, 'Fri', '14:00:00', '15:00:00', 'RM-345', 40, 0, 'X'),
@@ -988,8 +960,8 @@ INSERT INTO `schedules` (`schedule_id`, `course_id`, `academic_year`, `semester_
 (79, 6, '2023-2024', 2, 2, 'Wed', '12:00:00', '17:00:00', 'RM-328', 40, 0, 'X'),
 (80, 6, '2024-2025', 1, 7, 'Thu', '14:00:00', '17:00:00', 'RM-182', 40, 0, 'X'),
 (81, 6, '2024-2025', 2, 2, 'Wed', '09:00:00', '16:00:00', 'RM-197', 40, 0, 'X'),
-(82, 6, '2025-2026', 1, 3, 'Wed', '10:00:00', '15:00:00', 'RM-227', 40, 1, 'X'),
-(83, 6, '2025-2026', 2, 4, 'Thu', '11:00:00', '15:00:00', 'RM-152', 40, 1, 'X'),
+(82, 6, '2025-2026', 1, 3, 'Wed', '10:00:00', '15:00:00', 'RM-227', 40, 0, 'X'),
+(83, 6, '2025-2026', 2, 4, 'Thu', '11:00:00', '15:00:00', 'RM-152', 40, 0, 'X'),
 (84, 6, '2026-2027', 1, 2, 'Fri', '11:00:00', '16:00:00', 'RM-183', 40, 0, 'X'),
 (85, 6, '2026-2027', 2, 6, 'Thu', '12:00:00', '15:00:00', 'RM-125', 40, 0, 'X'),
 (86, 7, '2023-2024', 1, 4, 'Tue', '09:00:00', '17:00:00', 'RM-357', 40, 0, 'X'),
@@ -1004,8 +976,8 @@ INSERT INTO `schedules` (`schedule_id`, `course_id`, `academic_year`, `semester_
 (95, 8, '2023-2024', 2, 4, 'Thu', '09:00:00', '15:00:00', 'RM-460', 40, 0, 'X'),
 (96, 8, '2024-2025', 1, 6, 'Thu', '14:00:00', '15:00:00', 'RM-444', 40, 0, 'X'),
 (97, 8, '2024-2025', 2, 1, 'Fri', '09:00:00', '15:00:00', 'RM-484', 40, 0, 'X'),
-(98, 8, '2025-2026', 1, 5, 'Wed', '10:00:00', '15:00:00', 'RM-260', 40, 1, 'X'),
-(99, 8, '2025-2026', 2, 4, 'Thu', '14:00:00', '17:00:00', 'RM-340', 40, 1, 'X'),
+(98, 8, '2025-2026', 1, 5, 'Wed', '10:00:00', '15:00:00', 'RM-260', 40, 0, 'X'),
+(99, 8, '2025-2026', 2, 4, 'Thu', '14:00:00', '17:00:00', 'RM-340', 40, 0, 'X'),
 (100, 8, '2026-2027', 1, 6, 'Fri', '08:00:00', '16:00:00', 'RM-257', 40, 0, 'X'),
 (101, 8, '2026-2027', 2, 4, 'Wed', '12:00:00', '15:00:00', 'RM-156', 40, 0, 'X'),
 (102, 9, '2023-2024', 1, 4, 'Thu', '12:00:00', '15:00:00', 'RM-115', 40, 0, 'X'),
@@ -1156,8 +1128,8 @@ INSERT INTO `schedules` (`schedule_id`, `course_id`, `academic_year`, `semester_
 (247, 31, '2023-2024', 2, 6, 'Wed', '12:00:00', '15:00:00', 'RM-322', 40, 0, 'X'),
 (248, 31, '2024-2025', 1, 1, 'Tue', '09:00:00', '15:00:00', 'RM-121', 40, 0, 'X'),
 (249, 31, '2024-2025', 2, 1, 'Thu', '11:00:00', '15:00:00', 'RM-285', 40, 0, 'X'),
-(250, 31, '2025-2026', 1, 3, 'Mon', '13:00:00', '17:00:00', 'RM-114', 40, 1, 'X'),
-(251, 31, '2025-2026', 2, 3, 'Tue', '11:00:00', '15:00:00', 'RM-362', 40, 1, 'X'),
+(250, 31, '2025-2026', 1, 3, 'Mon', '13:00:00', '17:00:00', 'RM-114', 40, 0, 'X'),
+(251, 31, '2025-2026', 2, 3, 'Tue', '11:00:00', '15:00:00', 'RM-362', 40, 0, 'X'),
 (252, 31, '2026-2027', 1, 4, 'Thu', '08:00:00', '16:00:00', 'RM-425', 40, 0, 'X'),
 (253, 31, '2026-2027', 2, 5, 'Tue', '12:00:00', '17:00:00', 'RM-491', 40, 0, 'X'),
 (254, 32, '2023-2024', 1, 4, 'Tue', '12:00:00', '15:00:00', 'RM-323', 40, 0, 'X'),
@@ -1531,8 +1503,7 @@ INSERT INTO `schedules` (`schedule_id`, `course_id`, `academic_year`, `semester_
 (622, 17, '2023-2024', 1, 1, 'Thu', '11:00:00', '17:00:00', 'RM-426', 40, 0, 'Y'),
 (623, 17, '2023-2024', 2, 3, 'Mon', '11:00:00', '16:00:00', 'RM-263', 40, 0, 'Y'),
 (624, 17, '2024-2025', 1, 1, 'Wed', '13:00:00', '16:00:00', 'RM-124', 40, 0, 'Y'),
-(625, 17, '2024-2025', 2, 6, 'Fri', '14:00:00', '16:00:00', 'RM-176', 40, 0, 'Y');
-INSERT INTO `schedules` (`schedule_id`, `course_id`, `academic_year`, `semester_id`, `teacher_id`, `days`, `time_start`, `time_end`, `room`, `capacity`, `enrolled_count`, `section_code`) VALUES
+(625, 17, '2024-2025', 2, 6, 'Fri', '14:00:00', '16:00:00', 'RM-176', 40, 0, 'Y'),
 (626, 17, '2025-2026', 1, 4, 'Fri', '13:00:00', '16:00:00', 'RM-322', 40, 0, 'Y'),
 (627, 17, '2025-2026', 2, 7, 'Wed', '09:00:00', '17:00:00', 'RM-140', 40, 0, 'Y'),
 (628, 17, '2026-2027', 1, 7, 'Fri', '08:00:00', '15:00:00', 'RM-431', 40, 0, 'Y'),
@@ -1561,7 +1532,8 @@ INSERT INTO `schedules` (`schedule_id`, `course_id`, `academic_year`, `semester_
 (651, 20, '2025-2026', 2, 4, 'Thu', '13:00:00', '16:00:00', 'RM-243', 40, 0, 'Y'),
 (652, 20, '2026-2027', 1, 7, 'Wed', '13:00:00', '15:00:00', 'RM-159', 40, 0, 'Y'),
 (653, 20, '2026-2027', 2, 7, 'Fri', '08:00:00', '16:00:00', 'RM-219', 40, 0, 'Y'),
-(654, 21, '2023-2024', 1, 5, 'Thu', '14:00:00', '16:00:00', 'RM-174', 40, 0, 'Y'),
+(654, 21, '2023-2024', 1, 5, 'Thu', '14:00:00', '16:00:00', 'RM-174', 40, 0, 'Y');
+INSERT INTO `schedules` (`schedule_id`, `course_id`, `academic_year`, `semester_id`, `teacher_id`, `days`, `time_start`, `time_end`, `room`, `capacity`, `enrolled_count`, `section_code`) VALUES
 (655, 21, '2023-2024', 2, 7, 'Wed', '09:00:00', '16:00:00', 'RM-206', 40, 0, 'Y'),
 (656, 21, '2024-2025', 1, 4, 'Thu', '10:00:00', '16:00:00', 'RM-275', 40, 0, 'Y'),
 (657, 21, '2024-2025', 2, 4, 'Tue', '10:00:00', '16:00:00', 'RM-181', 40, 0, 'Y'),
@@ -1856,7 +1828,52 @@ INSERT INTO `schedules` (`schedule_id`, `course_id`, `academic_year`, `semester_
 (946, 71, '2025-2026', 1, 3, 'Fri', '09:00:00', '15:00:00', 'RM-434', 40, 0, 'Y'),
 (947, 71, '2025-2026', 2, 2, 'Mon', '10:00:00', '15:00:00', 'RM-111', 40, 0, 'Y'),
 (948, 71, '2026-2027', 1, 4, 'Mon', '13:00:00', '17:00:00', 'RM-437', 40, 0, 'Y'),
-(949, 71, '2026-2027', 2, 4, 'Tue', '09:00:00', '17:00:00', 'RM-360', 40, 0, 'Y');
+(949, 71, '2026-2027', 2, 4, 'Tue', '09:00:00', '17:00:00', 'RM-360', 40, 0, 'Y'),
+(950, 1, '2025-2026', 3, NULL, 'TBA', '08:00:00', '11:00:00', 'TBA', 40, 2, 'X'),
+(951, 2, '2025-2026', 3, NULL, 'TBA', '08:00:00', '11:00:00', 'TBA', 40, 2, 'X'),
+(952, 3, '2025-2026', 3, NULL, 'TBA', '08:00:00', '11:00:00', 'TBA', 40, 2, 'X'),
+(953, 5, '2025-2026', 3, NULL, 'TBA', '08:00:00', '11:00:00', 'TBA', 40, 4, 'X'),
+(954, 6, '2025-2026', 3, NULL, 'TBA', '08:00:00', '11:00:00', 'TBA', 40, 2, 'X'),
+(955, 8, '2025-2026', 3, NULL, 'TBA', '08:00:00', '11:00:00', 'TBA', 40, 2, 'X'),
+(956, 31, '2025-2026', 3, NULL, 'TBA', '08:00:00', '11:00:00', 'TBA', 40, 1, 'X'),
+(957, 33, '2025-2026', 3, NULL, 'TBA', '08:00:00', '11:00:00', 'TBA', 40, 3, 'X'),
+(958, 35, '2025-2026', 3, NULL, 'TBA', '08:00:00', '11:00:00', 'TBA', 40, 1, 'X'),
+(959, 36, '2025-2026', 3, NULL, 'TBA', '08:00:00', '11:00:00', 'TBA', 40, 1, 'X'),
+(960, 38, '2025-2026', 3, NULL, 'TBA', '08:00:00', '11:00:00', 'TBA', 40, 1, 'X'),
+(961, 39, '2025-2026', 3, NULL, 'TBA', '08:00:00', '11:00:00', 'TBA', 40, 1, 'X'),
+(962, 40, '2025-2026', 3, NULL, 'TBA', '08:00:00', '11:00:00', 'TBA', 40, 1, 'X'),
+(963, 11, '2025-2026', 3, NULL, 'TBA', '08:00:00', '11:00:00', 'TBA', 40, 1, 'X'),
+(964, 14, '2025-2026', 3, NULL, 'TBA', '08:00:00', '11:00:00', 'TBA', 40, 1, 'X'),
+(965, 15, '2025-2026', 3, NULL, 'TBA', '08:00:00', '11:00:00', 'TBA', 40, 1, 'X'),
+(966, 17, '2025-2026', 3, NULL, 'TBA', '08:00:00', '11:00:00', 'TBA', 40, 1, 'X'),
+(967, 18, '2025-2026', 3, NULL, 'TBA', '08:00:00', '11:00:00', 'TBA', 40, 1, 'X'),
+(968, 19, '2025-2026', 3, NULL, 'TBA', '08:00:00', '11:00:00', 'TBA', 40, 1, 'X'),
+(969, 16, '2025-2026', 3, NULL, 'TBA', '08:00:00', '11:00:00', 'TBA', 40, 0, 'X'),
+(970, 21, '2025-2026', 3, NULL, 'TBA', '08:00:00', '11:00:00', 'TBA', 40, 0, 'X'),
+(971, 22, '2025-2026', 3, NULL, 'TBA', '08:00:00', '11:00:00', 'TBA', 40, 0, 'X'),
+(972, 23, '2025-2026', 3, NULL, 'TBA', '08:00:00', '11:00:00', 'TBA', 40, 0, 'X'),
+(973, 25, '2025-2026', 3, NULL, 'TBA', '08:00:00', '11:00:00', 'TBA', 40, 0, 'X'),
+(974, 26, '2025-2026', 3, NULL, 'TBA', '08:00:00', '11:00:00', 'TBA', 40, 0, 'X');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `semesters`
+--
+
+CREATE TABLE `semesters` (
+  `semester_id` int(11) NOT NULL,
+  `semester_name` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+--
+-- Dumping data for table `semesters`
+--
+
+INSERT INTO `semesters` (`semester_id`, `semester_name`) VALUES
+(1, '1st Semester'),
+(2, '2nd Semester'),
+(3, 'Summer');
 
 -- --------------------------------------------------------
 
@@ -1902,8 +1919,7 @@ INSERT INTO `students` (`student_id`, `first_name`, `last_name`, `gender`, `birt
 ('UAA-2025-0002', 'Kusuo', 'Saiki_25', 'Female', NULL, NULL, NULL, 2, 1, 'Regular', 'Y'),
 ('UAA-2025-0003', 'Gintoki', 'Sakata_25', 'Male', NULL, NULL, NULL, 3, 1, 'Regular', 'Y'),
 ('UAA-2025-0004', 'Spike', 'Spiegel_25', 'Female', NULL, NULL, NULL, 4, 1, 'Regular', 'Y'),
-('UAA-2025-0005', 'Shoto', 'Todoroki_25', 'Male', NULL, NULL, NULL, 5, 1, 'Regular', 'X'),
-('UAA-2026-0001', 'john', 'cano', 'Male', NULL, NULL, NULL, 3, 1, 'Regular', 'X');
+('UAA-2025-0005', 'Shoto', 'Todoroki_25', 'Male', NULL, NULL, NULL, 5, 1, 'Regular', 'X');
 
 -- --------------------------------------------------------
 
@@ -1929,6 +1945,27 @@ INSERT INTO `teachers` (`teacher_id`, `first_name`, `last_name`) VALUES
 (5, 'Isambard', 'Brunel'),
 (6, 'Grace', 'Hopper'),
 (7, 'Jose', 'Rizal');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `year_levels`
+--
+
+CREATE TABLE `year_levels` (
+  `year_level_id` int(11) NOT NULL,
+  `year_level_name` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+--
+-- Dumping data for table `year_levels`
+--
+
+INSERT INTO `year_levels` (`year_level_id`, `year_level_name`) VALUES
+(1, '1st Year'),
+(2, '2nd Year'),
+(3, '3rd Year'),
+(4, '4th Year');
 
 --
 -- Indexes for dumped tables
@@ -1989,6 +2026,12 @@ ALTER TABLE `schedules`
   ADD KEY `teacher_id` (`teacher_id`);
 
 --
+-- Indexes for table `semesters`
+--
+ALTER TABLE `semesters`
+  ADD PRIMARY KEY (`semester_id`);
+
+--
 -- Indexes for table `students`
 --
 ALTER TABLE `students`
@@ -2000,6 +2043,12 @@ ALTER TABLE `students`
 --
 ALTER TABLE `teachers`
   ADD PRIMARY KEY (`teacher_id`);
+
+--
+-- Indexes for table `year_levels`
+--
+ALTER TABLE `year_levels`
+  ADD PRIMARY KEY (`year_level_id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -2015,25 +2064,25 @@ ALTER TABLE `courses`
 -- AUTO_INCREMENT for table `curriculum`
 --
 ALTER TABLE `curriculum`
-  MODIFY `curriculum_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=125;
+  MODIFY `curriculum_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=129;
 
 --
 -- AUTO_INCREMENT for table `enrollments`
 --
 ALTER TABLE `enrollments`
-  MODIFY `enrollment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=166;
+  MODIFY `enrollment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=176;
 
 --
 -- AUTO_INCREMENT for table `enrollment_schedules`
 --
 ALTER TABLE `enrollment_schedules`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=377;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=431;
 
 --
 -- AUTO_INCREMENT for table `payments`
 --
 ALTER TABLE `payments`
-  MODIFY `payment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=113;
+  MODIFY `payment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=114;
 
 --
 -- AUTO_INCREMENT for table `programs`
@@ -2045,13 +2094,25 @@ ALTER TABLE `programs`
 -- AUTO_INCREMENT for table `schedules`
 --
 ALTER TABLE `schedules`
-  MODIFY `schedule_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=950;
+  MODIFY `schedule_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=975;
+
+--
+-- AUTO_INCREMENT for table `semesters`
+--
+ALTER TABLE `semesters`
+  MODIFY `semester_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `teachers`
 --
 ALTER TABLE `teachers`
   MODIFY `teacher_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT for table `year_levels`
+--
+ALTER TABLE `year_levels`
+  MODIFY `year_level_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- Constraints for dumped tables

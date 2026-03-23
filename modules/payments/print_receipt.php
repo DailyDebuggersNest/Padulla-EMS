@@ -54,7 +54,7 @@ if(!$payment) die("Payment record not found.");
 
     <div class="receipt-container">
         <div class="school-header">
-            <h2>UNIVERSITY OF EXCELLENCE</h2>
+            <h2>UA ACADEMY</h2>
             <p class="mb-0 text-muted" style="font-size: 14px;">Cashier's Office</p>
         </div>
 
@@ -66,12 +66,12 @@ if(!$payment) die("Payment record not found.");
             <tr><th>Student ID:</th><td><?= htmlspecialchars($payment['student_no']) ?></td></tr>
             <tr><th>Received From:</th><td><strong><?= htmlspecialchars(strtoupper($payment['last_name'] . ', ' . $payment['first_name'])) ?></strong></td></tr>
             <tr><th>Program:</th><td><?= htmlspecialchars($payment['program_name'] ?? 'N/A') ?></td></tr>
-            <tr><th>Term Applied:</th><td><?= htmlspecialchars($payment['semester_id'] . ' Semester, A.Y. ' . $payment['academic_year']) ?></td></tr>
+            <tr><th>Term Applied:</th><td><?= $payment['semester_id'] == 3 ? 'Summer, A.Y. ' : htmlspecialchars($payment['semester_id'] . ' Semester, A.Y. ') ?><?= htmlspecialchars($payment['academic_year']) ?></td></tr>
             <tr><th>Particulars:</th><td><?= htmlspecialchars($payment['remarks'] ?: 'Tuition Fee Payment') ?></td></tr>
         </table>
 
         <div class="amount-box">
-            <h3>₱ <?= number_format($payment['amount'], 2) ?></h3>
+            <h3>&#8369; <?= number_format($payment['amount'], 2) ?></h3>
             <p>Amount Paid</p>
         </div>
 

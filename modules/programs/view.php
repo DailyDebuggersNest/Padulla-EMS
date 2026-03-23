@@ -57,7 +57,7 @@ foreach($raw_curriculum as $row) {
                 <div class="accordion-item mb-2 shadow-sm border-0">
                     <h2 class="accordion-header" id="heading_<?= $acc_id ?>">
                         <button class="accordion-button bg-light fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#<?= $acc_id ?>" aria-expanded="true" aria-controls="<?= $acc_id ?>">
-                            Year <?= $year ?> - <?= $sem ?> Semester
+                            Year <?= $year ?> - <?= $sem == 3 ? 'Summer' : $sem . ' Semester' ?>
                         </button>
                     </h2>
                     <div id="<?= $acc_id ?>" class="accordion-collapse collapse show" aria-labelledby="heading_<?= $acc_id ?>" data-bs-parent="#curriculumAccordion">

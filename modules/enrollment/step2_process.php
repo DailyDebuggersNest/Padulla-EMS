@@ -69,11 +69,12 @@ $stuStmt->execute([$student_id]);
 $student = $stuStmt->fetch();
 
 // Quick Verification: Duplicate Enrollment Check
+$force_edit = isset($_POST['force_edit']) ? true : false;
 $checkEntry = $pdo->prepare("SELECT enrollment_id FROM enrollments WHERE student_id = ? AND academic_year = ? AND semester_id = ?");
 $checkEntry->execute([$student_id, $acad_year, $semester_id]);
-if ($checkEntry->rowCount() > 0) {
-    echo "<div class='alert alert-danger'><h3><i class='fas fa-exclamation-circle'></i> Already Enrolled</h3><p>This student is already enrolled or pending for $acad_year - $semester_id.</p></div>";
-    echo "<a href='/EMS/modules/enrollment/records.php' class='btn btn-primary'>View Records</a>";
+if ($checkEntry->rowCount() > 0 && !$force_edit) {
+    echo "<div class='alert alert-danger'><h3><i class='fas fa-exclamation-circle'></i> Already Enrolled</h3><p>This student is already enrolled or pending for $acad_year - " . ($semester_id == 3 ? 'Summer' : htmlspecialchars($semester_id) . ' Semester') . ".</p></div>";
+    echo "<a href='" . BASE_PATH . "modules/enrollment/records.php' class='btn btn-primary'>View Records</a>";
     include_once '../../includes/footer.php';
     exit;
 }
@@ -142,33 +143,37 @@ if ($checkEntry->rowCount() > 0) {
             <div class="card-body">
                 <table class="table table-sm table-borderless">
                     <tr>
-                        <td>Tuition (₱<?= number_format($TUITION_PER_UNIT, 2) ?> x <?= number_format($total_units, 2) ?>)</td>
-                        <td class="text-end">₱<?= number_format($total_tuition, 2) ?></td>
+                        <td>Tuition (&#8369;<?= number_format($TUITION_PER_UNIT, 2) ?> x <?= number_format($total_units, 2) ?>)</td>
+                        <td class="text-end">&#8369;<?= number_format($total_tuition, 2) ?></td>
                     </tr>
                     <tr>
                         <td>Miscellaneous Fee</td>
-                        <td class="text-end">₱<?= number_format($MISC_FEE, 2) ?></td>
+                        <td class="text-end">&#8369;<?= number_format($MISC_FEE, 2) ?></td>
                     </tr>
                     <?php if($total_lab_fees > 0): ?>
                     <tr>
                         <td>Laboratory Fees</td>
-                        <td class="text-end">₱<?= number_format($total_lab_fees, 2) ?></td>
+                        <td class="text-end">&#8369;<?= number_format($total_lab_fees, 2) ?></td>
                     </tr>
                     <?php endif; ?>
                     <tr class="border-top fw-bold fs-5 text-primary">
                         <td>Total Amount Due</td>
-                        <td class="text-end">₱<?= number_format($total_assessment, 2) ?></td>
+                        <td class="text-end">&#8369;<?= number_format($total_assessment, 2) ?></td>
                     </tr>
                 </table>
 
                 <form method="POST" action="step3_save.php" class="mt-4">
+                    <?php if($force_edit): ?>
+                        <input type="hidden" name="force_edit" value="1">
+                    <?php endif; ?>
                     <input type="hidden" name="student_id" value="<?= htmlspecialchars($student_id) ?>">
                     <input type="hidden" name="acad_year" value="<?= htmlspecialchars($acad_year) ?>">
                     <input type="hidden" name="semester_id" value="<?= htmlspecialchars($semester_id) ?>">
                     <input type="hidden" name="total_units" value="<?= htmlspecialchars($total_units) ?>">
                     <input type="hidden" name="assessed_amount" value="<?= htmlspecialchars($total_assessment) ?>">
-                    <input type="hidden" name="program_id" value="<?= htmlspecialchars($program_id_selected) ?>">
-                      <input type="hidden" name="year_level_id" value="<?= htmlspecialchars($year_level_selected) ?>">                    <input type="hidden" name="section" value="<?= htmlspecialchars($section_selected) ?>">                    <?php foreach($enrollment_schedules as $es): ?>
+                    <input type="hidden" name="program_id" value="<?= htmlspecialchars($program_id_selected ?? '') ?>">
+                    <input type="hidden" name="year_level_id" value="<?= htmlspecialchars($year_level_selected ?? '') ?>">                    
+                    <input type="hidden" name="section" value="<?= htmlspecialchars($section_selected ?? '') ?>">                    <?php foreach($enrollment_schedules as $es): ?>
                         <input type="hidden" name="schedule_ids[]" value="<?= htmlspecialchars($es['schedule_id']) ?>">
                     <?php endforeach; ?>
 
