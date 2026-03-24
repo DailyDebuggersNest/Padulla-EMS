@@ -106,14 +106,22 @@ if ($success && $enrollment_id) {
 }
 ?>
 
+<div class="page-hero mb-4">
+    <div class="page-hero-body">
+        <span class="page-hero-kicker"><i class="fas fa-flag-checkered"></i> Enrollment Workflow</span>
+        <h2 class="page-hero-title">Step 3: Confirmation</h2>
+        <p class="page-hero-text">Enrollment transaction summary and next actions after final posting.</p>
+    </div>
+</div>
+
 <div class="row mb-4">
     <div class="col-md-12">
-        <div class="d-flex justify-content-between align-items-center bg-light p-3 border rounded">
-            <span class="badge bg-secondary fs-6"><i class="fas fa-check"></i> 1. Term & Subjects</span>
-            <i class="fas fa-arrow-right text-muted"></i>
-            <span class="badge bg-secondary fs-6"><i class="fas fa-check"></i> 2. Assessment Check</span>
-            <i class="fas fa-arrow-right text-muted"></i>
-            <span class="badge bg-success fs-6"><i class="fas fa-flag-checkered"></i> 3. Confirmed</span>
+        <div class="workflow-progress d-flex justify-content-between align-items-center">
+            <span class="workflow-step done"><i class="fas fa-check"></i> 1. Term & Subjects</span>
+            <i class="fas fa-arrow-right workflow-arrow"></i>
+            <span class="workflow-step done"><i class="fas fa-check"></i> 2. Assessment Check</span>
+            <i class="fas fa-arrow-right workflow-arrow"></i>
+            <span class="workflow-step active"><i class="fas fa-flag-checkered"></i> 3. Confirmed</span>
         </div>
     </div>
 </div>

@@ -34,14 +34,17 @@ foreach($raw_curriculum as $row) {
 }
 ?>
 
-<div class="row mb-3">
-    <div class="col-md-8">
-        <h2><i class="fas fa-sitemap text-primary"></i> Curriculum Viewer</h2>
-        <h5 class="text-muted"><?= htmlspecialchars($program['program_code'] . ' - ' . $program['program_name']) ?></h5>
-    </div>
-    <div class="col-md-4 text-end">
-        <a href="index.php" class="btn btn-secondary mt-2"><i class="fas fa-arrow-left"></i> Back</a>
-        <button class="btn btn-success mt-2"><i class="fas fa-plus"></i> Add Subject to Curriculum</button>
+<div class="page-hero mb-4">
+    <div class="page-hero-body d-flex flex-column flex-lg-row justify-content-between align-items-lg-end gap-3">
+        <div>
+            <span class="page-hero-kicker"><i class="fas fa-sitemap"></i> Curriculum Viewer</span>
+            <h2 class="page-hero-title"><?= htmlspecialchars($program['program_code'] . ' - ' . $program['program_name']) ?></h2>
+            <p class="page-hero-text">Inspect subjects by year and semester with a cleaner curriculum breakdown layout.</p>
+        </div>
+        <div class="action-toolbar">
+            <a href="index.php" class="btn btn-secondary"><i class="fas fa-arrow-left me-1"></i> Back</a>
+            <button class="btn btn-success"><i class="fas fa-plus me-1"></i> Add Subject to Curriculum</button>
+        </div>
     </div>
 </div>
 
@@ -49,7 +52,7 @@ foreach($raw_curriculum as $row) {
     <div class="alert alert-warning"><i class="fas fa-exclamation-triangle"></i> No curriculum subjects assigned to this program yet.</div>
 <?php else: ?>
     
-    <div class="accordion" id="curriculumAccordion">
+    <div class="accordion curriculum-accordion" id="curriculumAccordion">
         <?php foreach($curriculum as $year => $semesters): ?>
             <?php foreach($semesters as $sem => $subjects): ?>
                 <?php $acc_id = "collapse_" . $year . "_" . preg_replace('/[^A-Za-z0-9]/', '', $sem); ?>
@@ -62,7 +65,7 @@ foreach($raw_curriculum as $row) {
                     </h2>
                     <div id="<?= $acc_id ?>" class="accordion-collapse collapse show" aria-labelledby="heading_<?= $acc_id ?>" data-bs-parent="#curriculumAccordion">
                         <div class="accordion-body p-0">
-                            <table class="table table-striped table-hover mb-0">
+                            <table class="table table-striped table-hover mb-0 table-clean">
                                 <thead class="table-dark">
                                     <tr>
                                         <th style="width: 15%">Course Code</th>

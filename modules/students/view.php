@@ -66,13 +66,17 @@ function getOrdinal($number) {
 
 ?>
 
-<div class="row mb-3">
-    <div class="col-md-6">
-        <h2><i class="fas fa-user-graduate text-info"></i> Student Profile</h2>
-    </div>
-    <div class="col-md-6 text-end">
-        <a href="index.php" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Back to List</a>
-        <a href="<?= BASE_PATH ?>modules/enrollment/step1.php?student_id=<?= urlencode($student_id) ?>" class="btn btn-primary"><i class="fas fa-check-circle"></i> New Enrollment</a>
+<div class="page-hero mb-4">
+    <div class="page-hero-body d-flex flex-column flex-lg-row justify-content-between align-items-lg-end gap-3">
+        <div>
+            <span class="page-hero-kicker"><i class="fas fa-user-graduate"></i> Student Profile</span>
+            <h2 class="page-hero-title"><?= htmlspecialchars($student['last_name'] . ', ' . $student['first_name']) ?></h2>
+            <p class="page-hero-text">View full academic profile, enrollment history, and semester performance snapshot.</p>
+        </div>
+        <div class="action-toolbar">
+            <a href="index.php" class="btn btn-secondary"><i class="fas fa-arrow-left me-1"></i> Back to List</a>
+            <a href="<?= BASE_PATH ?>modules/enrollment/step1.php?student_id=<?= urlencode($student_id) ?>" class="btn btn-primary"><i class="fas fa-check-circle me-1"></i> New Enrollment</a>
+        </div>
     </div>
 </div>
 
@@ -80,7 +84,7 @@ function getOrdinal($number) {
     <!-- Student Information Card -->
     <div class="col-md-4">
         <div class="card shadow-sm mb-4">
-            <div class="card-header bg-dark text-white">
+            <div class="card-header panel-header-strong">
                 <h5 class="mb-0"><i class="fas fa-id-card"></i> Personal Info</h5>
             </div>
             <div class="card-body">
@@ -89,28 +93,28 @@ function getOrdinal($number) {
                         <i class="fas fa-user"></i>
                     </div>
                 </div>
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                <ul class="key-value-list">
+                    <li>
                         <strong>Student ID</strong>
                         <span class="badge bg-secondary"><?= htmlspecialchars($student['student_id']) ?></span>
                     </li>
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <li>
                         <strong>Name</strong>
                         <span class="text-end"><?= htmlspecialchars($student['first_name'] . ' ' . $student['last_name']) ?></span>
                     </li>
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <li>
                         <strong>Program</strong>
                         <span class="text-end fw-bold"><?= htmlspecialchars($student['program_code']) ?></span>
                     </li>
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <li>
                         <strong>Year Level</strong>
                         <span class="text-end"><?= htmlspecialchars($student['year_level_id']) ?> Year</span>
                     </li>
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <li>
                         <strong>Section</strong>
                         <span class="text-end fw-bold"><?= htmlspecialchars($student['section'] ?? 'X') ?></span>
                     </li>
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <li>
                         <strong>Status</strong>
                         <span class="badge bg-success"><?= htmlspecialchars($student['status']) ?></span>
                     </li>
@@ -122,7 +126,7 @@ function getOrdinal($number) {
     <!-- Enrollment History Dropdown Style -->
     <div class="col-md-8">
         <div class="card shadow-sm">
-            <div class="card-header bg-white d-flex justify-content-between align-items-center py-3">
+            <div class="card-header d-flex justify-content-between align-items-center py-3">
                 <h5 class="mb-0 text-dark fw-bold"><i class="fas fa-history text-primary"></i> Enrollment History</h5>
                 
                 <?php if (count($enrollments) > 0): ?>
@@ -178,7 +182,7 @@ function getOrdinal($number) {
 
                                     <!-- Table matching Image -->
                                     <div class="table-responsive px-4 py-2">
-                                        <table class="table table-borderless table-hover align-middle mb-0">
+                                        <table class="table table-hover align-middle mb-0 table-clean">
                                             <thead class="text-muted small border-bottom">
                                                 <tr>
                                                     <th width="5%">#</th>

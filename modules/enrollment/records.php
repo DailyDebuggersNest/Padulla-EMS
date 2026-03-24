@@ -17,73 +17,160 @@ $stmt = $pdo->prepare("
 ");
 $stmt->execute([$term, $sem]);
 $records = $stmt->fetchAll();
+
+$summary = [
+    'count' => count($records),
+    'units' => 0,
+    'assessed' => 0,
+    'enrolled' => 0,
+];
+
+foreach ($records as $row) {
+    $summary['units'] += (float) ($row['total_units'] ?? 0);
+    $summary['assessed'] += (float) ($row['assessed_amount'] ?? 0);
+    if (strcasecmp((string) ($row['status'] ?? ''), 'Enrolled') === 0) {
+        $summary['enrolled']++;
+    }
+}
+
+$avgUnits = $summary['count'] > 0 ? $summary['units'] / $summary['count'] : 0;
+$avgAssessment = $summary['count'] > 0 ? $summary['assessed'] / $summary['count'] : 0;
+
+if ((int) $sem === 3) {
+    $semesterLabel = 'Summer';
+} elseif ((int) $sem === 2) {
+    $semesterLabel = '2nd Semester';
+} else {
+    $semesterLabel = '1st Semester';
+}
 ?>
 
-<div class="row mb-3">
-    <div class="col-md-8">
-        <h2><i class="fas fa-folder-open text-primary"></i> Enrollment Records</h2>
-        <p class="text-muted">View all enrolled students for the specific term.</p>
+<div class="page-hero mb-4">
+    <div class="page-hero-body d-flex flex-column flex-xl-row justify-content-between align-items-xl-end gap-3">
+        <div>
+            <span class="page-hero-kicker"><i class="fas fa-archive"></i> Registrar Archive</span>
+            <h2 class="page-hero-title">Enrollment Records</h2>
+            <p class="page-hero-text">Review archived enrollments, compare term volume, and print official COR records fast.</p>
+        </div>
+        <div class="text-xl-end">
+            <div class="small text-muted mb-1">Loaded Scope</div>
+            <span class="badge rounded-pill text-bg-dark px-3 py-2"><?= htmlspecialchars($term) ?> | <?= htmlspecialchars($semesterLabel) ?></span>
+        </div>
     </div>
 </div>
 
-<div class="card shadow-sm mb-4">
-    <div class="card-body bg-light pb-0">
-        <form method="GET" class="row">
-            <div class="col-md-3 mb-3">
-                <label>Academic Year</label>
-                <input type="text" name="term" class="form-control" value="<?= htmlspecialchars($term) ?>">
+<div class="row g-3 mb-4">
+    <div class="col-md-6 col-xl-3">
+        <div class="card h-100 border-0 shadow-sm">
+            <div class="card-body">
+                <div class="small text-uppercase text-muted mb-1">Record Count</div>
+                <div class="h4 mb-0"><?= number_format($summary['count']) ?></div>
             </div>
-            <div class="col-md-3 mb-3">
-                <label>Semester</label>
+        </div>
+    </div>
+    <div class="col-md-6 col-xl-3">
+        <div class="card h-100 border-0 shadow-sm">
+            <div class="card-body">
+                <div class="small text-uppercase text-muted mb-1">Total Units</div>
+                <div class="h4 mb-0"><?= number_format($summary['units'], 1) ?></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-xl-3">
+        <div class="card h-100 border-0 shadow-sm">
+            <div class="card-body">
+                <div class="small text-uppercase text-muted mb-1">Total Assessed</div>
+                <div class="h4 mb-0 text-primary">&#8369;<?= number_format($summary['assessed'], 2) ?></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-xl-3">
+        <div class="card h-100 border-0 shadow-sm">
+            <div class="card-body">
+                <div class="small text-uppercase text-muted mb-1">Average Per Student</div>
+                <div class="small">Units: <strong><?= number_format($avgUnits, 1) ?></strong></div>
+                <div class="small">Assessment: <strong>&#8369;<?= number_format($avgAssessment, 2) ?></strong></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card shadow-sm border-0 mb-4">
+    <div class="card-body">
+        <form method="GET" class="row g-2 align-items-end">
+            <div class="col-md-4">
+                <label class="form-label small text-uppercase text-muted mb-1">Academic Year</label>
+                <input type="text" name="term" class="form-control" placeholder="e.g. 2025-2026" value="<?= htmlspecialchars($term) ?>">
+            </div>
+            <div class="col-md-4">
+                <label class="form-label small text-uppercase text-muted mb-1">Semester</label>
                 <select name="sem" class="form-select">
-                    <option value=1 <?= $sem==1?'selected':'' ?>>1st Sem</option>
-                    <option value=2 <?= $sem==2?'selected':'' ?>>2nd Sem</option>
-                    <option value=3 <?= $sem==3?'selected':'' ?>>Summer</option>
+                    <option value="1" <?= (int)$sem === 1 ? 'selected' : '' ?>>1st Semester</option>
+                    <option value="2" <?= (int)$sem === 2 ? 'selected' : '' ?>>2nd Semester</option>
+                    <option value="3" <?= (int)$sem === 3 ? 'selected' : '' ?>>Summer</option>
                 </select>
             </div>
-            <div class="col-md-3 mb-3 mt-4">
-                <button type="submit" class="btn btn-primary"><i class="fas fa-filter"></i> Load Records</button>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary w-100"><i class="fas fa-filter me-1"></i> Apply</button>
+            </div>
+            <div class="col-md-2">
+                <a href="records.php" class="btn btn-outline-secondary w-100"><i class="fas fa-undo me-1"></i> Reset</a>
             </div>
         </form>
     </div>
 </div>
 
-<div class="card shadow-sm">
+<div class="card shadow-sm border-0 overflow-hidden">
+    <div class="card-header bg-white border-0 pt-3 pb-2 d-flex justify-content-between align-items-center">
+        <div>
+            <h5 class="mb-0">Enrollment List</h5>
+            <small class="text-muted"><?= number_format($summary['enrolled']) ?> marked Enrolled in this selected scope.</small>
+        </div>
+        <span class="badge rounded-pill text-bg-secondary"><?= number_format($summary['count']) ?> rows</span>
+    </div>
     <div class="card-body p-0">
-        <table class="table table-hover table-striped mb-0">
-            <thead class="table-dark">
+        <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
                 <tr>
                     <th>Student ID</th>
                     <th>Name</th>
                     <th>Program</th>
-                    <th>Total Units</th>
-                    <th>Assessment</th>
-                    <th>Status</th>
+                    <th class="text-end">Total Units</th>
+                    <th class="text-end">Assessment</th>
+                    <th class="text-center">Status</th>
                     <th>Action</th>
                 </tr>
             </thead>
             <tbody>
                 <?php if(count($records) > 0): ?>
                     <?php foreach($records as $rec): ?>
+                        <?php
+                            $isEnrolled = strcasecmp((string)($rec['status'] ?? ''), 'Enrolled') === 0;
+                        ?>
                         <tr>
-                            <td><span class="badge bg-secondary"><?= htmlspecialchars($rec['student_id']) ?></span></td>
-                            <td class="fw-bold"><?= htmlspecialchars($rec['last_name'] . ', ' . $rec['first_name']) ?></td>
-                            <td><?= htmlspecialchars($rec['program_code']) ?></td>
-                            <td><?= htmlspecialchars($rec['total_units']) ?></td>
-                            <td>&#8369;<?= number_format($rec['assessed_amount'], 2) ?></td>
-                            <td><span class="badge bg-success"><?= htmlspecialchars($rec['status']) ?></span></td>
+                            <td><span class="badge rounded-pill text-bg-secondary"><?= htmlspecialchars($rec['student_id']) ?></span></td>
+                            <td>
+                                <div class="fw-semibold"><?= htmlspecialchars($rec['last_name'] . ', ' . $rec['first_name']) ?></div>
+                                <div class="small text-muted"><?= date('M d, Y', strtotime($rec['enrollment_date'])) ?></div>
+                            </td>
+                            <td><?= htmlspecialchars($rec['program_code'] ?: 'No Program') ?></td>
+                            <td class="text-end"><?= number_format((float)$rec['total_units'], 1) ?></td>
+                            <td class="text-end">&#8369;<?= number_format((float)$rec['assessed_amount'], 2) ?></td>
+                            <td class="text-center"><span class="badge <?= $isEnrolled ? 'text-bg-success' : 'text-bg-secondary' ?>"><?= htmlspecialchars($rec['status']) ?></span></td>
                             <td>
                                 <a href="print_cor.php?id=<?= $rec['enrollment_id'] ?>" target="_blank" class="btn btn-sm btn-outline-primary">
-                                    <i class="fas fa-print"></i> COR
+                                    <i class="fas fa-print me-1"></i> COR
                                 </a>
                             </td>
                         </tr>
                     <?php endforeach; ?>
                 <?php else: ?>
-                    <tr><td colspan="7" class="text-center py-4">No enrollment records found for <?= htmlspecialchars("$term $sem") ?>.</td></tr>
+                    <tr><td colspan="7" class="text-center py-5 text-muted">No enrollment records found for <?= htmlspecialchars($term) ?> (<?= htmlspecialchars($semesterLabel) ?>).</td></tr>
                 <?php endif; ?>
             </tbody>
         </table>
+        </div>
     </div>
 </div>
 

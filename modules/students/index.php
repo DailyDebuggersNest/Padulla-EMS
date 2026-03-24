@@ -14,9 +14,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     try {
         $pdo->beginTransaction();
         
-        // Auto-generate Student ID: UAA-YYYY-NNNN
+        // Auto-generate Student ID: HERO-YYYY-NNNN
         $current_year = date('Y');
-        $prefix = "UAA-{$current_year}-";
+        $prefix = "HERO-{$current_year}-";
         
         // Find the highest sequence number for the current year
         $stmt_seq = $pdo->prepare("SELECT student_id FROM students WHERE student_id LIKE ? ORDER BY student_id DESC LIMIT 1");
@@ -141,17 +141,20 @@ $stmt->execute($params);
 $students = $stmt->fetchAll();
 ?>
 
-<div class="row mb-3">
-    <div class="col-md-6">
-        <h2><i class="fas fa-users text-primary"></i> Student Masterlist</h2>
-        <p class="text-muted">Browse and select students for enrollment.</p>
-    </div>
-    <div class="col-md-6 text-end">
-        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#newStudentModal"><i class="fas fa-plus"></i> New Student</button>
+<div class="page-hero mb-4">
+    <div class="page-hero-body d-flex flex-column flex-lg-row justify-content-between align-items-lg-end gap-3">
+        <div>
+            <span class="page-hero-kicker"><i class="fas fa-users"></i> Students</span>
+            <h2 class="page-hero-title">Student Masterlist</h2>
+            <p class="page-hero-text">Browse, filter, and manage student records before enrollment and payment processing.</p>
+        </div>
+        <div>
+            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#newStudentModal"><i class="fas fa-plus me-1"></i> New Student</button>
+        </div>
     </div>
 </div>
 
-<div class="card shadow-sm mb-4">
+<div class="card shadow-sm mb-4 modern-table-card">
     <div class="card-body bg-light">
         <form method="GET" class="row border-bottom pb-3 mb-3">
             <div class="col-md-4 mb-2">
@@ -181,11 +184,11 @@ $students = $stmt->fetchAll();
             </div>
         </form>
 
-        <div class="table-responsive">
-            <table class="table table-hover table-striped">
+        <div class="table-responsive modern-table-wrap">
+            <table class="table table-hover align-middle modern-table mb-0">
                 <thead class="table-dark">
                     <tr>
-                        <th>#</th>
+                        <th class="text-center" style="width: 60px;">#</th>
                         <th>Student ID</th>
                         <th>Full Name</th>
                         <th>Program</th>
@@ -193,62 +196,62 @@ $students = $stmt->fetchAll();
                         <th>Section</th>
                         <th>Semester</th>
                         <th>Status</th>
-                        <th>Actions</th>
+                        <th class="text-center" style="width: 190px;">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php if (count($students) > 0): ?>
                         <?php $seq = 1; foreach ($students as $student): ?>
                             <tr>
-                                <td><?= $seq++ ?></td>
-                                <td><span class="badge bg-secondary"><?= htmlspecialchars($student['student_id'] ?? '') ?></span></td>
+                                <td class="text-center text-muted fw-semibold"><?= $seq++ ?></td>
+                                <td><span class="id-pill"><?= htmlspecialchars($student['student_id'] ?? '') ?></span></td>
                                 <td class="fw-bold"><?= htmlspecialchars($student['last_name'] . ', ' . $student['first_name']) ?></td>
-                                <td><?= htmlspecialchars(empty(trim($student['program_code'] ?? '')) ? 'N/A' : $student['program_code']) ?></td>
-                                <td><?= htmlspecialchars(empty(trim($student['year_level_id'] ?? '')) ? 'N/A' : $student['year_level_id']) ?></td>
-                                <td><?= htmlspecialchars(empty(trim($student['latest_section'] ?? '')) ? 'N/A' : $student['latest_section']) ?></td>
-                                <td><?= htmlspecialchars(empty(trim($student['latest_semester'] ?? '')) ? 'N/A' : ($student['latest_semester'] == 3 ? 'Summer' : $student['latest_semester'] . ' Sem')) ?></td>
+                                <td><span class="meta-pill"><?= htmlspecialchars(empty(trim($student['program_code'] ?? '')) ? 'N/A' : $student['program_code']) ?></span></td>
+                                <td><span class="meta-pill"><?= htmlspecialchars(empty(trim($student['year_level_id'] ?? '')) ? 'N/A' : $student['year_level_id']) ?></span></td>
+                                <td><span class="meta-pill"><?= htmlspecialchars(empty(trim($student['latest_section'] ?? '')) ? 'N/A' : $student['latest_section']) ?></span></td>
+                                <td><span class="meta-pill"><?= htmlspecialchars(empty(trim($student['latest_semester'] ?? '')) ? 'N/A' : ($student['latest_semester'] == 3 ? 'Summer' : $student['latest_semester'] . ' Sem')) ?></span></td>
                                 <td>
                                     <?php 
                                         $badgeClass = 'bg-success';
                                         if ($student['status'] == 'Irregular') $badgeClass = 'bg-warning text-dark';
                                         if ($student['status'] == 'Dropped') $badgeClass = 'bg-danger';
                                     ?>
-                                    <span class="badge <?= $badgeClass ?>"><?= htmlspecialchars($student['status']) ?></span>
+                                    <span class="badge status-pill <?= $badgeClass ?>"><?= htmlspecialchars($student['status']) ?></span>
                                 </td>
-                                <td>
-                                    <div class="btn-group" role="group">
-                                        <a href="view.php?student_id=<?= urlencode($student['student_id']) ?>" class="btn btn-sm btn-info text-white">
-                                            <i class="fas fa-eye"></i> Profile
+                                <td class="text-center">
+                                    <div class="table-actions d-inline-flex align-items-center justify-content-center flex-wrap gap-1">
+                                        <a href="view.php?student_id=<?= urlencode($student['student_id']) ?>" class="icon-action-btn action-view" title="View Profile">
+                                            <i class="fas fa-eye"></i>
                                         </a>
                                         
-                                        <a href="edit.php?student_id=<?= urlencode($student['student_id']) ?>" class="btn btn-sm btn-warning">
-                                            <i class="fas fa-edit"></i> Edit
+                                        <a href="edit.php?student_id=<?= urlencode($student['student_id']) ?>" class="icon-action-btn action-edit" title="Edit Student">
+                                            <i class="fas fa-edit"></i>
                                         </a>
 
                                         <?php if (!empty($student['latest_enrollment_id'])): ?>
-                                            <a href="../payments/pay.php?enrollment_id=<?= urlencode($student['latest_enrollment_id']) ?>" class="btn btn-sm btn-success text-white">
-                                                <i class="fas fa-money-bill-wave"></i> Pay
+                                            <a href="../payments/pay.php?enrollment_id=<?= urlencode($student['latest_enrollment_id']) ?>" class="icon-action-btn action-pay" title="Manage Payments">
+                                                <i class="fas fa-money-bill-wave"></i>
                                             </a>
                                         <?php else: ?>
-                                            <button class="btn btn-sm btn-secondary" disabled>
-                                                <i class="fas fa-money-bill-wave"></i> Pay
+                                            <button class="icon-action-btn action-disabled" title="No Payment Record" disabled>
+                                                <i class="fas fa-money-bill-wave"></i>
                                             </button>
                                         <?php endif; ?>
 
                                         <?php if ($student['is_currently_enrolled'] > 0): ?>
-                                            <a href="#" onclick="if(confirm('This student is already enrolled. Do you want to forcefully edit their subjects or re-enroll them?')) { window.location.href='<?= BASE_PATH ?>modules/enrollment/step1.php?student_id=<?= urlencode($student['student_id']) ?>&force_edit=1'; } return false;" class="btn btn-sm btn-secondary">
-                                                <i class="fas fa-check-circle"></i> Enrolled
+                                            <a href="#" onclick="if(confirm('This student is already enrolled. Do you want to forcefully edit their subjects or re-enroll them?')) { window.location.href='<?= BASE_PATH ?>modules/enrollment/step1.php?student_id=<?= urlencode($student['student_id']) ?>&force_edit=1'; } return false;" class="icon-action-btn action-enrolled" title="Already Enrolled">
+                                                <i class="fas fa-check-circle"></i>
                                             </a>
                                         <?php else: ?>
-                                            <a href="<?= BASE_PATH ?>modules/enrollment/step1.php?student_id=<?= urlencode($student['student_id']) ?>" class="btn btn-sm btn-primary">
-                                                <i class="fas fa-check-circle"></i> Enroll
+                                            <a href="<?= BASE_PATH ?>modules/enrollment/step1.php?student_id=<?= urlencode($student['student_id']) ?>" class="icon-action-btn action-enroll" title="Start Enrollment">
+                                                <i class="fas fa-check-circle"></i>
                                             </a>
                                         <?php endif; ?>
                                         <form method="POST" action="" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this student?');">
                                             <input type="hidden" name="action" value="delete_student">
                                             <input type="hidden" name="student_id" value="<?= htmlspecialchars($student['student_id']) ?>">
-                                            <button type="submit" class="btn btn-sm btn-danger text-white" style="border-top-left-radius: 0; border-bottom-left-radius: 0;" title="Delete Student">
-                                                <i class="fas fa-trash"></i> Delete
+                                            <button type="submit" class="icon-action-btn action-delete" title="Delete Student">
+                                                <i class="fas fa-trash"></i>
                                             </button>
                                         </form>
                                     </div>
@@ -273,13 +276,13 @@ $students = $stmt->fetchAll();
         <div class="modal-content">
             <form method="POST" action="">
                 <input type="hidden" name="action" value="add_student">
-                <div class="modal-header bg-dark text-white">
+                <div class="modal-header panel-header-strong">
                     <h5 class="modal-title" id="newStudentModalLabel"><i class="fas fa-user-plus"></i> Add New Student</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="alert alert-info py-2">
-                        <i class="fas fa-info-circle"></i> Student ID will be automatically generated as <strong>UAA-<?= date('Y') ?>-XXXX</strong>
+                        <i class="fas fa-info-circle"></i> Student ID will be automatically generated as <strong>HERO-<?= date('Y') ?>-XXXX</strong>
                     </div>
                     <div class="row">
                         <div class="col-md-6 mb-3">

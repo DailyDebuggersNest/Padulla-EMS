@@ -107,15 +107,23 @@ $curriculum_subjects = $currStmt->fetchAll();
 
 ?>
 
+<div class="page-hero mb-4">
+    <div class="page-hero-body">
+        <span class="page-hero-kicker"><i class="fas fa-list-check"></i> Enrollment Workflow</span>
+        <h2 class="page-hero-title">Step 1: Term and Subject Selection</h2>
+        <p class="page-hero-text">Set the academic term, choose program context, and verify curriculum subjects before assessment.</p>
+    </div>
+</div>
+
 <!-- Progress Bar -->
 <div class="row mb-4">
     <div class="col-md-12">
-        <div class="d-flex justify-content-between align-items-center bg-light p-3 border rounded">
-            <span class="badge bg-primary fs-6">1. Term & Subjects</span>
-            <i class="fas fa-arrow-right text-muted"></i>
-            <span class="badge bg-secondary fs-6">2. Assessment</span>
-            <i class="fas fa-arrow-right text-muted"></i>
-            <span class="badge bg-secondary fs-6">3. Confirmation</span>
+        <div class="workflow-progress d-flex justify-content-between align-items-center">
+            <span class="workflow-step active">1. Term & Subjects</span>
+            <i class="fas fa-arrow-right workflow-arrow"></i>
+            <span class="workflow-step">2. Assessment</span>
+            <i class="fas fa-arrow-right workflow-arrow"></i>
+            <span class="workflow-step">3. Confirmation</span>
         </div>
     </div>
 </div>
@@ -124,7 +132,7 @@ $curriculum_subjects = $currStmt->fetchAll();
     <!-- Student Information Card -->
     <div class="col-md-5">
         <div class="card shadow-sm h-100">
-            <div class="card-header bg-dark text-white">
+            <div class="card-header panel-header-strong">
                 <h5 class="mb-0"><i class="fas fa-user-graduate"></i> Student Target</h5>
             </div>
             <div class="card-body">
@@ -148,7 +156,7 @@ $curriculum_subjects = $currStmt->fetchAll();
     <!-- Enrollment Term Selection -->
     <div class="col-md-7">
         <div class="card shadow-sm h-100">
-            <div class="card-header bg-primary text-white">
+            <div class="card-header panel-header-strong">
                 <h5 class="mb-0"><i class="fas fa-calendar-alt"></i> Set Academic Term</h5>
             </div>
             <div class="card-body">
@@ -246,12 +254,12 @@ $curriculum_subjects = $currStmt->fetchAll();
     <input type="hidden" name="section" value="<?= htmlspecialchars($selected_section ?? 'X') ?>">
 
     <div class="card shadow-sm mb-4">
-        <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+        <div class="card-header panel-header-strong d-flex justify-content-between align-items-center">
             <h5 class="mb-0"><i class="fas fa-book"></i> Available Curriculum Subjects</h5>
             <span class="badge bg-light text-dark">Total Units: <span id="totalUnitsBadge">0.00</span></span>
         </div>
         <div class="card-body p-0">
-            <table class="table table-hover mb-0">
+            <table class="table table-hover mb-0 table-clean">
                 <thead class="table-light">
                     <tr>
                         <th class="ps-3" style="width: 50px;">

@@ -36,17 +36,18 @@ $balance = $enrollment['assessed_amount'] - $total_paid;
     <title>Payment Ledger - <?= htmlspecialchars($enrollment['student_id']) ?></title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        body { background: #fff; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #333; }
-        .ledger-container { padding: 40px; margin: 0 auto; max-width: 900px; }
-        .school-header { text-align: center; border-bottom: 2px solid #000; padding-bottom: 20px; margin-bottom: 30px; }
-        .school-header h2 { margin: 0; font-weight: bold; font-family: serif;}
-        .info-table th { width: 150px; text-align: left; color: #555; }
-        .table-ledger th { background-color: #f8f9fa !important; border-bottom: 2px solid #000; }
-        .summary-box { border: 2px solid #000; padding: 15px; margin-top: 30px; border-radius: 5px; }
+        body { background: #f4f7fb; font-family: 'Inter', 'Segoe UI', sans-serif; color: #1f2a37; }
+        .ledger-container { padding: 34px; margin: 0 auto; max-width: 980px; background: #fff; border: 1px solid #d6e0ee; border-radius: 16px; box-shadow: 0 12px 30px rgba(30,58,95,0.12); }
+        .school-header { text-align: center; border-bottom: 2px solid #1e3a5f; padding-bottom: 18px; margin-bottom: 24px; }
+        .school-header h2 { margin: 0; font-weight: 900; letter-spacing: 0.5px; color: #1e3a5f; }
+        .info-table th { width: 150px; text-align: left; color: #5f6f84; }
+        .table-ledger th { background-color: #eff5fd !important; border-bottom: 1px solid #d3e0f2; text-transform: uppercase; font-size: 0.72rem; letter-spacing: 0.6px; }
+        .table-ledger td, .table-ledger th { border-color: #dfe8f4; }
+        .summary-box { border: 1px solid #d2e0f1; padding: 15px; margin-top: 30px; border-radius: 12px; background: #f7fbff; }
         @media print {
             .no-print { display: none !important; }
-            body { padding: 0; }
-            .ledger-container { padding: 0; }
+            body { padding: 0; background: #fff; }
+            .ledger-container { padding: 0; border: none; border-radius: 0; box-shadow: none; }
         }
     </style>
 </head>
@@ -132,7 +133,7 @@ $balance = $enrollment['assessed_amount'] - $total_paid;
                         <strong class="text-success">&#8369;<?= number_format($total_paid, 2) ?></strong>
                     </div>
                     <hr>
-                    <div class="d-flex justify-content-between fs-5 text-danger">
+                    <div class="d-flex justify-content-between fs-5" style="color:#c12b38;">
                         <span><strong>Current Balance:</strong></span>
                         <strong>&#8369;<?= number_format($balance, 2) ?></strong>
                     </div>

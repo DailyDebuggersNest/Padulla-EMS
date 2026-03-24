@@ -81,14 +81,22 @@ if ($checkEntry->rowCount() > 0 && !$force_edit) {
 
 ?>
 
+<div class="page-hero mb-4">
+    <div class="page-hero-body">
+        <span class="page-hero-kicker"><i class="fas fa-calculator"></i> Enrollment Workflow</span>
+        <h2 class="page-hero-title">Step 2: Assessment and Schedule Review</h2>
+        <p class="page-hero-text">Validate selected class schedules and confirm assessed tuition before final posting.</p>
+    </div>
+</div>
+
 <div class="row mb-4">
     <div class="col-md-12">
-        <div class="d-flex justify-content-between align-items-center bg-light p-3 border rounded">
-            <span class="badge bg-secondary fs-6"><i class="fas fa-check"></i> 1. Term & Subjects</span>
-            <i class="fas fa-arrow-right text-muted"></i>
-            <span class="badge bg-primary fs-6">2. Assessment Check</span>
-            <i class="fas fa-arrow-right text-muted"></i>
-            <span class="badge bg-secondary fs-6">3. Confirmation</span>
+        <div class="workflow-progress d-flex justify-content-between align-items-center">
+            <span class="workflow-step done"><i class="fas fa-check"></i> 1. Term & Subjects</span>
+            <i class="fas fa-arrow-right workflow-arrow"></i>
+            <span class="workflow-step active">2. Assessment Check</span>
+            <i class="fas fa-arrow-right workflow-arrow"></i>
+            <span class="workflow-step">3. Confirmation</span>
         </div>
     </div>
 </div>
@@ -97,11 +105,11 @@ if ($checkEntry->rowCount() > 0 && !$force_edit) {
     <!-- Schedule Review Card -->
     <div class="col-md-8">
         <div class="card shadow-sm mb-4">
-            <div class="card-header bg-dark text-white">
+            <div class="card-header panel-header-strong">
                 <h5 class="mb-0"><i class="fas fa-table"></i> Class Schedule Confirmation</h5>
             </div>
             <div class="card-body p-0">
-                <table class="table table-striped mb-0">
+                <table class="table table-striped mb-0 table-clean">
                     <thead class="table-light">
                         <tr>
                             <th>Code</th>
@@ -137,7 +145,7 @@ if ($checkEntry->rowCount() > 0 && !$force_edit) {
     <!-- Assessment Card -->
     <div class="col-md-4">
         <div class="card shadow-sm border-primary mb-4">
-            <div class="card-header bg-primary text-white">
+            <div class="card-header panel-header-accent">
                 <h5 class="mb-0"><i class="fas fa-calculator"></i> Fee Assessment</h5>
             </div>
             <div class="card-body">

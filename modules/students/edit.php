@@ -43,19 +43,22 @@ if (!$student) {
 $programs = $pdo->query("SELECT * FROM programs ORDER BY program_code")->fetchAll();
 
 ?>
-<div class="row mb-3">
-    <div class="col-md-6">
-        <h2><i class="fas fa-user-edit text-warning"></i> Edit Student</h2>
-        <p class="text-muted">Update information for <?= htmlspecialchars($student["student_id"]) ?></p>
-    </div>
-    <div class="col-md-6 text-end">
-        <a href="index.php" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Back to Masterlist</a>
-        <a href="view.php?student_id=<?= urlencode($student_id) ?>" class="btn btn-info text-white"><i class="fas fa-eye"></i> View Profile</a>
+<div class="page-hero mb-4">
+    <div class="page-hero-body d-flex flex-column flex-lg-row justify-content-between align-items-lg-end gap-3">
+        <div>
+            <span class="page-hero-kicker"><i class="fas fa-user-edit"></i> Student Update</span>
+            <h2 class="page-hero-title">Edit Student Profile</h2>
+            <p class="page-hero-text">Update core student information for <?= htmlspecialchars($student["student_id"]) ?>.</p>
+        </div>
+        <div class="action-toolbar">
+            <a href="index.php" class="btn btn-secondary"><i class="fas fa-arrow-left me-1"></i> Back to Masterlist</a>
+            <a href="view.php?student_id=<?= urlencode($student_id) ?>" class="btn btn-primary"><i class="fas fa-eye me-1"></i> View Profile</a>
+        </div>
     </div>
 </div>
 
 <div class="card shadow-sm mb-4">
-    <div class="card-header bg-dark text-white">
+    <div class="card-header panel-header-strong">
         <h5 class="mb-0"><i class="fas fa-id-card"></i> Student Information</h5>
     </div>
     <div class="card-body bg-light">
